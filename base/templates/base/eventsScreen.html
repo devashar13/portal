@@ -1,0 +1,41 @@
+{%extends "base/base.html"%}
+{% block content %}
+
+<table class="table" id="events">
+    <thead class="thead-dark">
+      <tr>
+        <th class = "mt-head">Event</th>
+        <th class = "mt-head">Organization</th>
+        <th class = "mt-head">City</th>
+        <th class = "mt-head">Country</th>
+        <th class = "mt-head">Start Date</th>
+        <th class = "mt-head">End Date</th>
+        <th class = "mt-head">Type</th>
+        <th class = "mt-head">Impact</th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+    {%for event in data.itertuples%}
+      <tr>
+        <td>{{event.event}}</td>
+        <td>{{event.org}}</td>
+        <td>{{event.city}}</td>
+        <td>{{event.country}}</td>
+        <td>{{event.start_date|date:'d/m/Y'}}</td>
+        <td>{{event.end_date|date:'d/m/Y'}}</td>
+        <td>{{event.Type}}</td>
+        <td>{{event.Impact}}</td>
+
+
+
+
+      </tr>
+    {%endfor%}
+      
+    </tbody>
+  </table>
+
+  {%endblock%}
+

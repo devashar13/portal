@@ -1,0 +1,24 @@
+{%extends "base/base.html"%}
+{% load templatetags %}
+
+{% block content %}
+
+<table class="table"id="hotels" >
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Hotel Name</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for hotel in hotels%}
+      <tr class="hotel-names">
+        <td id="{{hotel|get:"hotel._id"}}" onclick="getHotelId(this)">{{hotel.name}}</td>
+      </tr>
+    {%endfor%}
+      
+    </tbody>
+  </table>
+
+  {%endblock%}
+
+

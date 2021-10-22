@@ -1,0 +1,29 @@
+
+
+//  Add to kt_production.hotel
+
+{
+    "evnets":[
+        {
+            "Name":"name",
+            "From":"from",
+            "to":"to",
+            "priceIncrease":"% increase"
+        }
+    ]
+}
+
+
+//  Create kt_production.eventdata
+// {
+//     "city_name":"name",
+//     "hotels":["object ids for the events added"],
+//     "Events":[{
+//         "Name":"name",
+//         "From":"from",
+//         "to":"to",
+//         "priceIncrease":"% increase"
+//     }],
+//     "neighbours":[]
+
+// }
