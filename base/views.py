@@ -42,7 +42,7 @@ def hotelinfo(request):
         hotel = collection.find_one({"_id":obj_id})
         # print(hotel)
         file =('Sample upcoming events in _ Rome - Barcelona.xlsx')
-        newData = pd.read_excel(file,sheet_name=hotel["city_id"])
+        newData = pd.read_excel(file,sheet_name="Barcelona")
         return render(request,"base/hotelinfo.html",{"id":id,"events":newData,"hotelData":hotel})
     
 
@@ -68,11 +68,64 @@ def increaseroomprice(request):
                 "increase_percentage":increase
             }
         ]
+        # collection.update(
+        # {"_id":obj_id},
+        # {"$addToSet":{"events":mongo_data}}
+        # )
+        file =('Sample upcoming events in _ Rome - Barcelona.xlsx')
+        newData = pd.read_excel(file,sheet_name="Barcelona")
+        find = collection.find({"_id":obj_id},{"mappings.channel_manager.rate_plans_rate_type":1})
+    
+        # print(find)
+        # find = collection.find(
+        #     {"_id":obj_id},{"_id":1,"mappings.channel_manager.rate_plans_rate_type":1})
+
+        rate_type_list = []
+        for ho in find:
+            hotel_info = ho
+
+        rate_plans_rate_type = hotel_info['mappings']['channel_manager']['rate_plans_rate_type'].keys()
+
+        for rate_plans in rate_plans_rate_type:
+            print(rate_plans)
+            for x in hotel_info['mappings']['channel_manager']['rate_plans_rate_type'][rate_plans]['rate_plan_list'].keys():
+
+                mapped_name = hotel_info['mappings']['channel_manager']['rate_plans_rate_type'][rate_plans]['rate_plan_list'][x]["mapped_name"]
+            
+            for i,name in enumerate(mapped_name):
+                collection.update(
+                    {"_id":obj_id},
+                    {"$mul":{"mappings.channel_manager.rate_plans_rate_type.{}.rate_plan_list.{}.mapped_name.{}.price".format(rate_plans,x,i):1.05}
+                    },multi=True)
+            
+
+        
+
+
+            
+            # z = rate['mappings']['channel_manager']['rate_plans_rate_type']
+            
+
+
+
+
+        # hotel = collection.update(
+        #     {"_id":obj_id},{"$mul":{"price":1.05}},multi=True)
+        # for ho in hotel:
+        #     print(ho)
+
+        mongo_data = [
+    {
+        "Name":event_name,
+        "start_date":from_date,
+        "end_date":to_date,
+        "increase_percentage":increase
+    }
+]
         collection.update(
         {"_id":obj_id},
         {"$addToSet":{"events":mongo_data}}
         )
-        file =('Sample upcoming events in _ Rome - Barcelona.xlsx')
-        newData = pd.read_excel(file,sheet_name="Bangalore")
         hotel = collection.find_one({"_id":obj_id})
+
         return render(request,"base/hotelinfo.html",{"id":id,"events":newData,"hotelData":hotel,"success":"success"})
