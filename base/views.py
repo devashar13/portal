@@ -42,7 +42,7 @@ def hotelinfo(request):
         hotel = collection.find_one({"_id":obj_id})
         # print(hotel)
         file =('Sample upcoming events in _ Rome - Barcelona.xlsx')
-        newData = pd.read_excel(file,sheet_name="Barcelona")
+        newData = pd.read_excel(file,sheet_name="Bangalore")
         return render(request,"base/hotelinfo.html",{"id":id,"events":newData,"hotelData":hotel})
     
 
@@ -73,13 +73,13 @@ def increaseroomprice(request):
         # {"$addToSet":{"events":mongo_data}}
         # )
         file =('Sample upcoming events in _ Rome - Barcelona.xlsx')
-        newData = pd.read_excel(file,sheet_name="Barcelona")
+        newData = pd.read_excel(file,sheet_name="Bangalore")
         find = collection.find({"_id":obj_id},{"mappings.channel_manager.rate_plans_rate_type":1})
     
         # print(find)
         # find = collection.find(
         #     {"_id":obj_id},{"_id":1,"mappings.channel_manager.rate_plans_rate_type":1})
-
+        inc  = 1 + float(float(increase)/float(100))
         rate_type_list = []
         for ho in find:
             hotel_info = ho
@@ -95,7 +95,7 @@ def increaseroomprice(request):
             for i,name in enumerate(mapped_name):
                 collection.update(
                     {"_id":obj_id},
-                    {"$mul":{"mappings.channel_manager.rate_plans_rate_type.{}.rate_plan_list.{}.mapped_name.{}.price".format(rate_plans,x,i):1.05}
+                    {"$mul":{"mappings.channel_manager.rate_plans_rate_type.{}.rate_plan_list.{}.mapped_name.{}.price".format(rate_plans,x,i):inc}
                     },multi=True)
             
 
@@ -129,3 +129,4 @@ def increaseroomprice(request):
         hotel = collection.find_one({"_id":obj_id})
 
         return render(request,"base/hotelinfo.html",{"id":id,"events":newData,"hotelData":hotel,"success":"success"})
+
